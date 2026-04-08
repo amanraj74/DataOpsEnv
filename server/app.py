@@ -43,6 +43,10 @@ app = create_app(
     max_concurrent_envs=1,
 )
 
+@app.get("/health")
+def health_check():
+    return {"status": "healthy"}
+
 
 def main(host: str = "0.0.0.0", port: int = 8000):
     """
