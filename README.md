@@ -4,6 +4,8 @@ emoji: 🏆
 colorFrom: blue
 colorTo: indigo
 sdk: docker
+tags:
+  - openenv
 pinned: false
 ---
 # 🏆 DataOpsEnv — AI Data Engineering Agent Benchmark
