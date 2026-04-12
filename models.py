@@ -94,3 +94,16 @@ class DataOpsObservation(Observation):
         default=None,
         description="Feedback from the last action taken",
     )
+    done: bool = Field(
+        default=False,
+        description="Whether the episode is complete",
+    )
+    reward: Optional[float] = Field(
+        default=None,
+        description="Reward for the action",
+    )
+
+__all__ = [
+    "DataOpsAction",
+    "DataOpsObservation",
+]

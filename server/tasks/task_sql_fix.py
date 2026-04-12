@@ -14,9 +14,9 @@ import json
 from typing import Any, Dict, List, Optional, Tuple
 
 
-# ──────────────────────────────────────────────────────────────────────
+# 
 # Database schema + seed data
-# ──────────────────────────────────────────────────────────────────────
+# 
 
 SETUP_SQL = """
 CREATE TABLE IF NOT EXISTS departments (
@@ -121,9 +121,9 @@ INSERT INTO salary_history VALUES (5, 9, 100000, 120000, '2023-01-01', 'promotio
 """
 
 
-# ──────────────────────────────────────────────────────────────────────
+# 
 # Broken queries with expected corrections
-# ──────────────────────────────────────────────────────────────────────
+# 
 
 QUERIES = [
     {
@@ -302,28 +302,28 @@ class SqlFixTask:
                 "employees": {
                     "columns": [
                         "emp_id (PK)", "first_name", "last_name", "email",
-                        "dept_id (FK→departments)", "salary", "hire_date",
-                        "manager_id (FK→employees, nullable)", "is_active",
+                        "dept_id (FKdepartments)", "salary", "hire_date",
+                        "manager_id (FKemployees, nullable)", "is_active",
                     ],
                     "row_count": 12,
                 },
                 "projects": {
                     "columns": [
-                        "project_id (PK)", "project_name", "dept_id (FK→departments)",
+                        "project_id (PK)", "project_name", "dept_id (FKdepartments)",
                         "start_date", "end_date (nullable)", "status", "budget",
                     ],
                     "row_count": 5,
                 },
                 "project_assignments": {
                     "columns": [
-                        "assignment_id (PK)", "emp_id (FK→employees)",
-                        "project_id (FK→projects)", "role", "hours_allocated",
+                        "assignment_id (PK)", "emp_id (FKemployees)",
+                        "project_id (FKprojects)", "role", "hours_allocated",
                     ],
                     "row_count": 10,
                 },
                 "salary_history": {
                     "columns": [
-                        "history_id (PK)", "emp_id (FK→employees)",
+                        "history_id (PK)", "emp_id (FKemployees)",
                         "old_salary", "new_salary", "change_date", "reason",
                     ],
                     "row_count": 5,

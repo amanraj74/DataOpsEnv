@@ -15,9 +15,9 @@ import random
 from typing import Any, Dict, List, Optional, Tuple
 
 
-# ──────────────────────────────────────────────────────────────────────
+# 
 # Deterministic dataset + issue generation
-# ──────────────────────────────────────────────────────────────────────
+# 
 
 SCHEMA = {
     "table_name": "employees",
@@ -109,7 +109,7 @@ def generate_dataset_and_manifest(seed: int = 42) -> Tuple[str, List[Dict[str, A
         used_emails.add(email)
         used_ids.add(i)
 
-    # ── Inject NULL value issues (rows 201-210) ──
+    #  Inject NULL value issues (rows 201-210) 
     null_positions = []
     for i in range(201, 211):
         first = rng.choice(FIRST_NAMES)
@@ -145,7 +145,7 @@ def generate_dataset_and_manifest(seed: int = 42) -> Tuple[str, List[Dict[str, A
         rows.append(row)
         used_ids.add(i)
 
-    # ── Inject DUPLICATE primary key issues (rows 211-215) ──
+    #  Inject DUPLICATE primary key issues (rows 211-215) 
     for idx, dup_id in enumerate([3, 7, 15, 42, 100]):
         i = 211 + idx
         first = rng.choice(FIRST_NAMES)
@@ -172,7 +172,7 @@ def generate_dataset_and_manifest(seed: int = 42) -> Tuple[str, List[Dict[str, A
         })
         rows.append(row)
 
-    # ── Inject INVALID data type issues (rows 216-223) ──
+    #  Inject INVALID data type issues (rows 216-223) 
     type_errors = [
         ("salary", "not_a_number"),
         ("salary", "abc"),
@@ -210,7 +210,7 @@ def generate_dataset_and_manifest(seed: int = 42) -> Tuple[str, List[Dict[str, A
         })
         rows.append(row)
 
-    # ── Inject OUTLIER issues (rows 224-228) ──
+    #  Inject OUTLIER issues (rows 224-228) 
     outlier_specs = [
         ("salary", -50000),
         ("salary", 15000000),
@@ -245,7 +245,7 @@ def generate_dataset_and_manifest(seed: int = 42) -> Tuple[str, List[Dict[str, A
         })
         rows.append(row)
 
-    # ── Inject FOREIGN KEY violation issues (rows 229-235) ──
+    #  Inject FOREIGN KEY violation issues (rows 229-235) 
     invalid_depts = [999, 000, 500, 201, 302, 777, 888]
     for idx, bad_dept in enumerate(invalid_depts):
         i = 229 + idx
@@ -273,7 +273,7 @@ def generate_dataset_and_manifest(seed: int = 42) -> Tuple[str, List[Dict[str, A
         })
         rows.append(row)
 
-    # ── Shuffle rows deterministically ──
+    #  Shuffle rows deterministically 
     rng.shuffle(rows)
 
     # Build CSV string
@@ -368,12 +368,12 @@ class AuditTask:
                 return 0.0
             return 2 * precision * recall / (precision + recall)
 
-        # ── Tier 1: Type-only matching (20%) ──
+        #  Tier 1: Type-only matching (20%) 
         gt_types = set(issue["issue_type"] for issue in self.ground_truth_issues)
         sub_types = set(issue.get("issue_type", "") for issue in submitted_issues if issue.get("issue_type"))
         type_f1 = f1(len(gt_types & sub_types), len(sub_types - gt_types), len(gt_types - sub_types))
 
-        # ── Tier 2: Type+Column matching (40%) ──
+        #  Tier 2: Type+Column matching (40%) 
         gt_type_col = set()
         for issue in self.ground_truth_issues:
             gt_type_col.add((issue["issue_type"], issue["column"]))
@@ -390,7 +390,7 @@ class AuditTask:
         fn_coarse = len(gt_type_col - sub_type_col)
         coarse_f1 = f1(tp_coarse, fp_coarse, fn_coarse)
 
-        # ── Tier 3: Type+Column+Row matching (40%) ──
+        #  Tier 3: Type+Column+Row matching (40%) 
         gt_detailed = set()
         for issue in self.ground_truth_issues:
             key = (issue["issue_type"], str(issue.get("row", "")), issue["column"])
@@ -415,7 +415,7 @@ class AuditTask:
         fn_fine = len(gt_detailed - sub_detailed)
         fine_f1 = f1(tp_fine, fp_fine, fn_fine)
 
-        # ── Blend tiers (adjust weights if agent doesn't provide rows) ──
+        #  Blend tiers (adjust weights if agent doesn't provide rows) 
         if has_row_numbers:
             score = 0.2 * type_f1 + 0.4 * coarse_f1 + 0.4 * fine_f1
         else:

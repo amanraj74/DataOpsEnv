@@ -6,9 +6,9 @@ on real-world data engineering tasks with deterministic grading and dense
 reward signals.
 
 Three tasks with increasing difficulty:
-  1. Data Quality Audit (Easy) — detect issues in a dataset
-  2. SQL Bug Fix (Medium) — fix broken SQL queries
-  3. Pipeline Debug (Hard) — debug a multi-step data pipeline
+  1. Data Quality Audit (Easy)  detect issues in a dataset
+  2. SQL Bug Fix (Medium)  fix broken SQL queries
+  3. Pipeline Debug (Hard)  debug a multi-step data pipeline
 """
 
 from typing import Any, Dict, List, Optional
@@ -32,7 +32,7 @@ TASK_TYPES = ["data_quality_audit", "sql_bug_fix", "pipeline_debug"]
 
 class DataOpsEnvironment(Environment):
     """
-    DataOps Environment — AI Data Engineering Agent Benchmark.
+    DataOps Environment  AI Data Engineering Agent Benchmark.
 
     Simulates real-world data engineering workflows where agents must:
     - Audit data quality in datasets

@@ -12,12 +12,12 @@ import sqlite3
 from typing import Any, Dict, List, Optional, Tuple
 
 
-# ──────────────────────────────────────────────────────────────────────
+# 
 # Pipeline definition
-# ──────────────────────────────────────────────────────────────────────
+# 
 
 # The pipeline computes a department performance dashboard:
-# raw_employees → stg_active_employees → int_dept_metrics → fct_dept_performance
+# raw_employees  stg_active_employees  int_dept_metrics  fct_dept_performance
 
 PIPELINE_SETUP_SQL = """
 CREATE TABLE IF NOT EXISTS raw_departments (
@@ -248,8 +248,8 @@ class PipelineTask:
                 "Review the pipeline logs, the SQL models, and the dependency graph.\n"
                 "Identify which models have bugs and fix them.\n\n"
                 "Actions:\n"
-                "  1. patch_model: payload={model_name, fixed_sql} — fix a model's SQL\n"
-                "  2. submit_final: payload={} — run the patched pipeline and grade\n\n"
+                "  1. patch_model: payload={model_name, fixed_sql}  fix a model's SQL\n"
+                "  2. submit_final: payload={}  run the patched pipeline and grade\n\n"
                 "You must patch ALL buggy models before submitting.\n"
                 "Models with no bugs should NOT be patched."
             ),

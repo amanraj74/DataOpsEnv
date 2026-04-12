@@ -14,11 +14,14 @@ authors = [
 ]
 
 dependencies = [
-    "openenv-core[core]>=0.2.2",
-    "fastapi>=0.115.0",
-    "uvicorn>=0.24.0",
-    "pydantic>=2.0.0",
+    "openenv-core>=0.2.0",
+    "openenv>=0.1.13",
+    "fastapi>=0.110.0",
+    "uvicorn[standard]>=0.27.0",
+    "pydantic>=2.5.0",
     "pandas>=2.0.0",
+    "websockets",
+    "requests",
 ]
 
 [project.optional-dependencies]
@@ -29,3 +32,10 @@ dev = [
 
 [project.scripts]
 server = "server.app:main"
+
+[tool.setuptools]
+include-package-data = true
+packages = ["server"]
+
+[tool.setuptools.package-data]
+dataops_env = ["**/*.yaml", "**/*.yml", "**/*.md"]

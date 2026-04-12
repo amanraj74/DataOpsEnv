@@ -25,7 +25,7 @@ def test_reset_default():
     assert obs.steps_remaining > 0
     assert obs.data_preview is not None
     assert obs.schema_info is not None
-    print("✅ test_reset_default passed")
+    print(" test_reset_default passed")
 
 
 def test_reset_sql_fix():
@@ -35,7 +35,7 @@ def test_reset_sql_fix():
     assert obs.task_type == "sql_bug_fix"
     assert obs.sql_query is not None
     assert obs.done is False
-    print("✅ test_reset_sql_fix passed")
+    print(" test_reset_sql_fix passed")
 
 
 def test_reset_pipeline():
@@ -47,7 +47,7 @@ def test_reset_pipeline():
     assert obs.logs is not None
     assert obs.dependency_graph is not None
     assert obs.done is False
-    print("✅ test_reset_pipeline passed")
+    print(" test_reset_pipeline passed")
 
 
 def test_state_property():
@@ -57,7 +57,7 @@ def test_state_property():
     state = env.state
     assert state.episode_id is not None
     assert state.step_count == 0
-    print("✅ test_state_property passed")
+    print(" test_state_property passed")
 
 
 def test_state_increments():
@@ -71,7 +71,7 @@ def test_state_increments():
     )
     env.step(action)
     assert env.state.step_count == 1
-    print("✅ test_state_increments passed")
+    print(" test_state_increments passed")
 
 
 def test_audit_empty_report():
@@ -86,7 +86,7 @@ def test_audit_empty_report():
     obs = env.step(action)
     assert obs.done is True
     assert obs.current_score == 0.0
-    print("✅ test_audit_empty_report passed")
+    print(" test_audit_empty_report passed")
 
 
 def test_audit_partial_report():
@@ -111,7 +111,7 @@ def test_audit_partial_report():
     assert obs.done is True
     assert obs.current_score > 0.0  # Should get partial credit
     assert obs.current_score <= 1.0
-    print(f"✅ test_audit_partial_report passed (score={obs.current_score:.4f})")
+    print(f" test_audit_partial_report passed (score={obs.current_score:.4f})")
 
 
 def test_audit_invalid_action():
@@ -126,7 +126,7 @@ def test_audit_invalid_action():
     obs = env.step(action)
     assert obs.done is False
     assert obs.reward < 0  # Should be a penalty
-    print("✅ test_audit_invalid_action passed")
+    print(" test_audit_invalid_action passed")
 
 
 def test_sql_fix_correct_query():
@@ -151,7 +151,7 @@ def test_sql_fix_correct_query():
     obs = env.step(action)
     assert obs.reward > 0  # Should get positive reward
     assert obs.done is False  # More queries to fix
-    print(f"✅ test_sql_fix_correct_query passed (reward={obs.reward:.4f})")
+    print(f" test_sql_fix_correct_query passed (reward={obs.reward:.4f})")
 
 
 def test_sql_fix_broken_query():
@@ -169,7 +169,7 @@ def test_sql_fix_broken_query():
     )
     obs = env.step(action)
     assert obs.reward <= 0  # Should not get positive reward
-    print("✅ test_sql_fix_broken_query passed")
+    print(" test_sql_fix_broken_query passed")
 
 
 def test_pipeline_patch_and_submit():
@@ -194,7 +194,7 @@ def test_pipeline_patch_and_submit():
     obs = env.step(action)
     assert obs.done is False
     assert obs.reward > 0
-    print(f"✅ pipeline patch stg_active_employees (reward={obs.reward:.4f})")
+    print(f" pipeline patch stg_active_employees (reward={obs.reward:.4f})")
 
     # Patch int_dept_metrics
     action = DataOpsAction(
@@ -216,7 +216,7 @@ def test_pipeline_patch_and_submit():
     )
     obs = env.step(action)
     assert obs.done is False
-    print(f"✅ pipeline patch int_dept_metrics (reward={obs.reward:.4f})")
+    print(f" pipeline patch int_dept_metrics (reward={obs.reward:.4f})")
 
     # Patch fct_dept_performance
     action = DataOpsAction(
@@ -239,7 +239,7 @@ def test_pipeline_patch_and_submit():
     )
     obs = env.step(action)
     assert obs.done is False
-    print(f"✅ pipeline patch fct_dept_performance (reward={obs.reward:.4f})")
+    print(f" pipeline patch fct_dept_performance (reward={obs.reward:.4f})")
 
     # Submit final
     action = DataOpsAction(
@@ -249,7 +249,7 @@ def test_pipeline_patch_and_submit():
     obs = env.step(action)
     assert obs.done is True
     assert obs.current_score > 0.5  # Should get a good score with all bugs fixed
-    print(f"✅ test_pipeline_patch_and_submit passed (score={obs.current_score:.4f})")
+    print(f" test_pipeline_patch_and_submit passed (score={obs.current_score:.4f})")
 
 
 def test_reward_in_range():
@@ -278,7 +278,7 @@ def test_reward_in_range():
         obs = env.step(action)
         assert 0.0 <= obs.current_score <= 1.0, f"Score {obs.current_score} out of range for {task_type}"
 
-    print("✅ test_reward_in_range passed")
+    print(" test_reward_in_range passed")
 
 
 def test_deterministic_reset():
@@ -291,7 +291,7 @@ def test_deterministic_reset():
 
     assert obs1.data_preview == obs2.data_preview
     assert obs1.schema_info == obs2.schema_info
-    print("✅ test_deterministic_reset passed")
+    print(" test_deterministic_reset passed")
 
 
 def test_episode_done_after_submit():
@@ -310,7 +310,7 @@ def test_episode_done_after_submit():
     obs2 = env.step(action)
     assert obs2.done is True
     assert obs2.error_message is not None
-    print("✅ test_episode_done_after_submit passed")
+    print(" test_episode_done_after_submit passed")
 
 
 if __name__ == "__main__":
@@ -339,7 +339,7 @@ if __name__ == "__main__":
             test()
             passed += 1
         except Exception as e:
-            print(f"❌ {test.__name__} FAILED: {e}")
+            print(f" {test.__name__} FAILED: {e}")
             import traceback
             traceback.print_exc()
             failed += 1

@@ -1,18 +1,18 @@
 ---
-title: DataOpsenv Benchmark
-emoji: 🏆
+title: DataOps Benchmark
 colorFrom: blue
 colorTo: indigo
-sdk: docker 
+sdk: docker
+app_port: 7860
 tags:
   - openenv
 pinned: false
 ---
-# 🏆 DataOpsEnv — AI Data Engineering Agent Benchmark
+# DataOpsEnv - AI Data Engineering Agent Benchmark
 
 > A production-grade OpenEnv benchmark that evaluates AI agents on real-world data engineering tasks with deterministic grading and dense reward signals.
 
-## 📋 Overview
+## Overview
 
 DataOpsEnv is an OpenEnv-compatible environment that simulates real-world data engineering workflows. It enables AI agents to:
 
@@ -20,15 +20,15 @@ DataOpsEnv is an OpenEnv-compatible environment that simulates real-world data e
 - **Repair broken SQL queries** (fix joins, filters, aggregations, cartesian products)
 - **Debug data pipelines** (identify faulty steps, fix SQL models, resolve dependencies)
 
-The environment provides **deterministic grading**, **dense reward signals**, and **multi-step reasoning tasks** — making it ideal for evaluating and training autonomous data engineering agents.
+The environment provides **deterministic grading**, **dense reward signals**, and **multi-step reasoning tasks** - making it ideal for evaluating and training autonomous data engineering agents.
 
-## 🎯 Motivation
+## Motivation
 
 Modern organizations lose millions due to poor data quality, broken pipelines, and incorrect analytics queries. Data engineers spend hours debugging CSV issues, SQL bugs, and pipeline failures. DataOpsEnv simulates these **exact workflows** as a benchmark for AI agents.
 
-## 🧩 Tasks
+## Tasks
 
-### Task 1 — Data Quality Audit (Easy)
+### Task 1 - Data Quality Audit (Easy)
 | Property | Details |
 |----------|---------|
 | **Goal** | Detect all quality issues in a 235-row employee dataset |
@@ -36,9 +36,9 @@ Modern organizations lose millions due to poor data quality, broken pipelines, a
 | **Agent Finds** | Null values, duplicate PKs, invalid types, outliers, FK violations |
 | **Action** | `submit_report(issues=[...])` |
 | **Grading** | F1 score (precision + recall) with partial credit |
-| **Score Range** | 0.0 — 1.0 |
+| **Score Range** | 0.0 - 1.0 |
 
-### Task 2 — SQL Bug Fix (Medium)
+### Task 2 - SQL Bug Fix (Medium)
 | Property | Details |
 |----------|---------|
 | **Goal** | Fix 4 broken SQL queries against a real database |
@@ -46,9 +46,9 @@ Modern organizations lose millions due to poor data quality, broken pipelines, a
 | **Agent Fixes** | Missing JOINs, wrong filters, bad GROUP BY, cartesian products |
 | **Action** | `submit_fix(query_id, fixed_sql)` |
 | **Grading** | Row-level output match against expected results |
-| **Score Range** | 0.0 — 1.0 |
+| **Score Range** | 0.0 - 1.0 |
 
-### Task 3 — Pipeline Debugging (Hard)
+### Task 3 - Pipeline Debugging (Hard)
 | Property | Details |
 |----------|---------|
 | **Goal** | Fix a broken 4-model SQL data pipeline |
@@ -56,9 +56,9 @@ Modern organizations lose millions due to poor data quality, broken pipelines, a
 | **Agent Must** | Identify faulty models, fix SQL, ensure correct output |
 | **Actions** | `patch_model(name, sql)` then `submit_final()` |
 | **Grading** | Pipeline success + output match + bug identification |
-| **Score Range** | 0.0 — 1.0 |
+| **Score Range** | 0.0 - 1.0 |
 
-## 🔧 Action Space
+## Action Space
 
 ```python
 class DataOpsAction(Action):
@@ -76,7 +76,7 @@ class DataOpsAction(Action):
 | `patch_model` | Pipeline | `{model_name: str, fixed_sql: str}` |
 | `submit_final` | Pipeline | `{}` |
 
-## 👁️ Observation Space
+## Observation Space
 
 ```python
 class DataOpsObservation(Observation):
@@ -96,7 +96,7 @@ class DataOpsObservation(Observation):
     reward: float               # Step reward
 ```
 
-## 💰 Reward Function
+## Reward Function
 
 Dense reward system with step-by-step signals:
 
@@ -112,12 +112,12 @@ Dense reward system with step-by-step signals:
 | Invalid action | -0.05 |
 
 **Key features:**
-- ✅ Step-by-step rewards (not sparse)
-- ✅ Partial credit for partial solutions
-- ✅ Penalties for bad behavior
-- ✅ Score always in [0.0, 1.0]
+- Step-by-step rewards (not sparse)
+- Partial credit for partial solutions
+- Penalties for bad behavior
+- Score always in [0.0, 1.0]
 
-## 🚀 Setup Instructions
+## Setup Instructions
 
 ### Prerequisites
 - Python 3.10+
@@ -134,17 +134,17 @@ pip install -e ".[dev]"
 python tests/test_env.py
 
 # Start server locally
-uvicorn server.app:app --host 0.0.0.0 --port 8000
+uvicorn server.app:app --host 0.0.0.0 --port 7860
 ```
 
 ### Docker
 
 ```bash
 # Build
-docker build -f server/Dockerfile -t dataops-env .
+docker build -t dataops-env .
 
 # Run
-docker run -p 8000:8000 dataops-env
+docker run -p 7860:7860 dataops-env
 ```
 
 ### Run Inference
@@ -159,7 +159,7 @@ export MODEL_NAME=Qwen/Qwen2.5-72B-Instruct
 python inference.py
 ```
 
-## 📊 Baseline Results
+## Baseline Results
 
 | Task | Score | Steps |
 |------|-------|-------|
@@ -170,36 +170,37 @@ python inference.py
 
 *Baseline with Qwen2.5-72B-Instruct at temperature=0.3*
 
-## 🏗️ Project Structure
+## Project Structure
 
 ```
 dataops_env/
-├── inference.py              # Baseline inference script (root)
-├── openenv.yaml              # OpenEnv manifest
-├── models.py                 # Pydantic Action/Observation models
-├── pyproject.toml            # Dependencies
-├── README.md                 # This file
-├── server/
-│   ├── app.py                # FastAPI server
-│   ├── Dockerfile            # Container image
-│   ├── requirements.txt      # Server dependencies
-│   ├── dataops_environment.py  # Main environment class
-│   └── tasks/
-│       ├── task_audit.py     # Data quality audit task
-│       ├── task_sql_fix.py   # SQL bug fix task
-│       └── task_pipeline.py  # Pipeline debug task
-└── tests/
-    └── test_env.py           # Test suite
+  Dockerfile                # Container image
+  inference.py              # Baseline inference script
+  openenv.yaml              # OpenEnv manifest
+  models.py                 # Pydantic Action/Observation models
+  client.py                 # HTTP client for remote usage
+  pyproject.toml            # Dependencies
+  README.md                 # This file
+  requirements.txt          # Python dependencies
+  server/
+    app.py                  # FastAPI server
+    dataops_environment.py  # Main environment class
+    tasks/
+      task_audit.py         # Data quality audit task
+      task_sql_fix.py       # SQL bug fix task
+      task_pipeline.py      # Pipeline debug task
+  tests/
+    test_env.py             # Test suite
 ```
 
-## ⚙️ Environment Design
+## Environment Design
 
-- **reset()** → Clean state initialization with task selection
-- **step(action)** → Dense reward per action with immediate feedback
-- **state** → Episode tracking with step count and ID
-- **Deterministic** → Same seed = same dataset/queries/pipeline
-- **Episode Boundaries** → Clear done signal on final submission or step limit
+- **reset()** - Clean state initialization with task selection
+- **step(action)** - Dense reward per action with immediate feedback
+- **state** - Episode tracking with step count and ID
+- **Deterministic** - Same seed = same dataset/queries/pipeline
+- **Episode Boundaries** - Clear done signal on final submission or step limit
 
-## 📄 License
+## License
 
 BSD 3-Clause License
